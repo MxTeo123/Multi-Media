@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="4_1091_Matei_Teodor_Paul.css" rel="stylesheet" />
+    <title>HTML5 - ImageEditor</title>
+  </head>
+  <body>
+    <h1 id="title">Image editor</h1>
+
+    <canvas id="Canvas">
+      Your browser does not support the canvas element.
+    </canvas>
+
+    <canvas id="canvasHistogram">
+      Your browser does not support the canvas element.
+    </canvas>
+
+    <input id="fileBrowser" type="file" accept="image/*" />
+
+    <div id="buttonsDiv">
+      <button id="btnAddText">Add Text</button>
+      <button id="btnResize">Resize</button>
+      <button id="btnSave">Save</button>
+    </div>
+
+    <div id="textOptions">
+      <label for="textInput">Text:</label>
+      <input type="text" id="textInput" />
+
+      <label for="textSizeInput">Text Size:</label>
+      <input type="number" id="textSizeInput" />
+
+      <label for="textColorInput">Text Color:</label>
+      <input type="color" id="textColorInput" />
+
+      <label for="textXInput">Text X Position:</label>
+      <input type="number" id="textXInput" />
+
+      <label for="textYInput">Text Y Position:</label>
+      <input type="number" id="textYInput" />
+
+      <button id="btnAddText2">Add Text</button>
+    </div>
+
+    <div id="resizeOption">
+      <label for="resizeXInput">New Width:</label>
+      <input type="number" id="resizeXInput" />
+
+      <label for="resizeYInput">New Height:</label>
+      <input type="number" id="resizeYInput" />
+
+      <button id="btnResize2">Enter</button>
+    </div>
+
+    <script src="4_1091_Matei_Teodor_Paul.js"></script>
+    <script>
+      "use strict";
+      const canvasHistogram = document.getElementById("canvasHistogram");
+      const barChart = new BarChart(canvasHistogram);
+      const imageEditor = new ImageEditor(document.getElementById("Canvas"));
+      document
+        .getElementById("fileBrowser")
+        .addEventListener("change", function (e) {
+          const files = e.target.files;
+          if (files.length > 0) {
+            const file = files[0];
+            const reader = new FileReader();
+            reader.addEventListener("load", function () {
+              const dataUrl = reader.result;
+              const img = document.createElement("img");
+              img.addEventListener("load", function () {
+                imageEditor.changeImage(img);
+                imageEditor.drawHistogram();
+              });
+              img.src = dataUrl;
+            });
+            reader.readAsDataURL(file);
+          }
+          fileBrowser.style.display = "none";
+        });
+
+      document.getElementById("btnSave").addEventListener("click", function () {
+        imageEditor.saveImage();
+      });
+
+      document
+        .getElementById("btnAddText")
+        .addEventListener("click", function () {
+          const textOptions = document.getElementById("textOptions");
+
+          if (
+            textOptions.style.display == "none" &&
+            resizeOption.style.display == "none"
+          ) {
+            textOptions.style.display = "flex";
+          }
+          if (
+            textOptions.style.display == "none" &&
+            resizeOption.style.display != "none"
+          ) {
+            resizeOption.style.display = "none";
+            textOptions.style.display = "flex";
+          } else {
+            textOptions.style.display = "none";
+          }
+        });
+
+      document
+        .getElementById("btnAddText2")
+        .addEventListener("click", function () {
+          const text = document.getElementById("textInput").value;
+          const textSize = parseInt(
+            document.getElementById("textSizeInput").value
+          );
+          const textColor = document.getElementById("textColorInput").value;
+          const textX = parseInt(document.getElementById("textXInput").value);
+          const textY = parseInt(document.getElementById("textYInput").value);
+
+          imageEditor.addText(text, textSize, textColor, textX, textY);
+        });
+
+      document
+        .getElementById("btnResize")
+        .addEventListener("click", function () {
+          const resizeOption = document.getElementById("resizeOption");
+
+          if (
+            resizeOption.style.display == "none" &&
+            textOptions.style.display == "none"
+          ) {
+            resizeOption.style.display = "flex";
+          }
+          if (
+            resizeOption.style.display == "none" &&
+            textOptions.style.display != "none"
+          ) {
+            textOptions.style.display = "none";
+            resizeOption.style.display = "flex";
+          } else {
+            resizeOption.style.display = "none";
+          }
+        });
+
+      document
+        .getElementById("btnResize2")
+        .addEventListener("click", function () {
+          const newX = parseInt(document.getElementById("resizeXInput").value);
+          const newY = parseInt(document.getElementById("resizeYInput").value);
+
+          imageEditor.resizeImage(newX, newY);
+        });
+    </script>
+  </body>
+</html>

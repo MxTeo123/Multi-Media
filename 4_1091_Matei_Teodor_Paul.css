@@ -1,0 +1,44 @@
+#title {
+  position: fixed;
+  left: 45%;
+  right: 50%;
+  white-space: nowrap;
+}
+
+#Canvas {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 82vh;
+}
+#fileBrowser {
+  display: flex;
+  margin: 0 auto;
+  padding-top: 30%;
+}
+
+#buttonsDiv {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgb(240, 248, 255);
+  padding: 10px;
+}
+
+#textOptions {
+  display: none;
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#resizeOption {
+  display: none;
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
